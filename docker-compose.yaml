@@ -10,9 +10,9 @@ services:
       - documents-service
       - signatures-service
     environment:
-      - AUTH_SERVICE_URL=http://auth-service:8081
-      - DOCUMENTS_SERVICE_URL=http://documents-service:8082
-      - SIGNATURES_SERVICE_URL=http://signatures-service:8083
+      - AUTH_SERVICE_URL=http://auth-service:8083
+      - DOCUMENTS_SERVICE_URL=http://documents-service:8081
+      - SIGNATURES_SERVICE_URL=http://signatures-service:8082
     networks:
       - backend
 
@@ -30,7 +30,7 @@ services:
     depends_on:
       - auth-service
     environment:
-      - AUTH_SERVICE_URL=http://auth-service:8081
+      - AUTH_SERVICE_URL=http://auth-service:8083
     networks:
       - backend
 
@@ -41,7 +41,7 @@ services:
     depends_on:
       - auth-service
     environment:
-      - AUTH_SERVICE_URL=http://auth-service:8081
+      - AUTH_SERVICE_URL=http://auth-service:8083
     networks:
       - backend
 
