@@ -1,5 +1,5 @@
 # Dockerfile
-FROM openjdk:17-jdk-slim
-VOLUME /tmp
-COPY target/*.jar app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
+FROM openjdk:17
+EXPOSE 8081
+ADD target/document-service.jar document-service.jar
+ENTRYPOINT ["java","-jar","/document-service.jar"]

@@ -1,5 +1,5 @@
 # Dockerfile
-FROM openjdk:17-jdk-slim
-VOLUME /tmp
-COPY target/*.jar app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
+FROM openjdk:17
+EXPOSE 8082
+ADD target/signature-service.jar signature-service.jar
+ENTRYPOINT ["java","-jar","signature-service.jar"]

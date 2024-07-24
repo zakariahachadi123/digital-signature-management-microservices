@@ -1,45 +1,51 @@
 version: '3.8'
+
 services:
-  user-service:
-    build: ./user-service
-    container_name: user-service
+  api-gateway:
+    image: gateway-service-image:latest
     ports:
-      - "8081:8081"
-    networks:
-      - microservices-network
-
-  document-service:
-    build: ./document-service
-    container_name: document-service
-    ports:
-      - "8082:8082"
-    networks:
-      - microservices-network
+      - "8080:8080"
     depends_on:
-      - user-service
+      - auth-service
+      - documents-service
+      - signatures-service
+    environment:
+      - AUTH_SERVICE_URL=http://auth-service:8081
+      - DOCUMENTS_SERVICE_URL=http://documents-service:8082
+      - SIGNATURES_SERVICE_URL=http://signatures-service:8083
+    networks:
+      - backend
 
-  signature-service:
-    build: ./signature-service
-    container_name: signature-service
+  auth-service:
+    image: auth-service-image:latest
     ports:
       - "8083:8083"
     networks:
-      - microservices-network
-    depends_on:
-      - user-service
+      - backend
 
-  api-gateway:
-    build: ./api-gateway
-    container_name: api-gateway
+  documents-service:
+    image: document-service-image:latest
     ports:
-      - "8080:8080"
-    networks:
-      - microservices-network
+      - "8081:8081"
     depends_on:
-      - user-service
-      - document-service
-      - signature-service
+      - auth-service
+    environment:
+      - AUTH_SERVICE_URL=http://auth-service:8081
+    networks:
+      - backend
+
+  signatures-service:
+    image: signature-service-image:latest
+    ports:
+      - "8082:8082"
+    depends_on:
+      - auth-service
+    environment:
+      - AUTH_SERVICE_URL=http://auth-service:8081
+    networks:
+      - backend
 
 networks:
-  microservices-network:
+  backend:
     driver: bridge
+
